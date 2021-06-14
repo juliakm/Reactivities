@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using MediatR;
+using Application.Activities;
 
 
 namespace API
@@ -36,10 +38,16 @@ namespace API
             });
             //required when accessing a resource from a different domain
             services.AddCors(opt => 
-                opt.AddPolicy("CorsPolicy", policy => {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
-                })
-            );} 
+            {
+                opt.AddPolicy("CorsPolicy", policy => 
+                {
+                  policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                });
+            });
+            services.AddMediatR(typeof(List.Handler).Assembly);
+        } 
+
+           
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         // Returns responses
