@@ -5,12 +5,14 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using Persistence;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Application.Activities
 {
     public class List
     {
-        public class Query : IRequest<List<Activity>> {}
+        public class Query : IRequest<List<Activity>> { }
 
         public class Handler : IRequestHandler<Query, List<Activity>>
         {
@@ -22,7 +24,9 @@ namespace Application.Activities
 
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.ToListAsync();
+
+                return await _context.Activities.ToListAsync(cancellationToken);
+
             }
         }
     }
